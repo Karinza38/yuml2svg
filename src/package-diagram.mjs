@@ -1,23 +1,22 @@
-"use strict";
-
-const {
+import {
   extractBgAndNote,
   formatLabel,
+  recordName,
   serializeDot,
   splitYumlExpr,
-} = require("./yuml2dot-utils");
-const UIDHandler = require("./uidHandler");
-const Color = require("color");
+} from "./yuml2dot-utils.mjs";
+import UIDHandler from "./uidHandler.mjs";
+import Color from "color";
 
 const RANKSEP = 0.5;
 
 /*
-Unofficial syntax, based on the activity diagram syntax specified in yuml.me
+Unofficial syntax, based on the class diagram syntax specified in yuml.me
 
-Node           [node1]
-Association    [node1]-[node2]
-Labeled assoc  [node1]label-[node2]
-Note           [node1]-[note: a note here]
+Package        [package1]
+Association    [package1]->[package2]
+Labeled assoc  [package1]label->[package2]
+Note           [package1]-[note: a note here]
 Comment        // Comments
 */
 
@@ -28,22 +27,25 @@ function parseYumlExpr(specLine) {
   for (const part of parts) {
     if (/^\[.*\]$/.test(part)) {
       // node
-      const ret = extractBgAndNote(part.substr(1, part.length - 2), true);
 
+      const ret = extractBgAndNote(part.substr(1, part.length - 2), true);
       exprs.push([
-        ret.isNote ? "note" : "box3d",
+        ret.isNote ? "note" : "tab",
         ret.part,
         ret.bg,
         ret.fontcolor,
       ]);
-    } else if (part.endsWith("-")) {
+    } else if (part === "-") {
+      // connector for notes
+      exprs.push(["edge", "none", "none", "", "dashed"]);
+    } else if (part.endsWith("->")) {
       // line w/ or wo/ label
       exprs.push([
         "edge",
         "none",
-        "none",
-        part.substr(0, part.length - 1).trim(),
-        "solid",
+        "vee",
+        part.substr(0, part.length - 2).trim(),
+        "dashed",
       ]);
     } else {
       throw new Error(`Invalid expression - ${part}.`);
@@ -64,7 +66,7 @@ function composeDotExpr(specLines, options) {
     for (const elem of parsedYumlExpr) {
       const [shape] = elem;
 
-      if (shape === "note" || shape === "box3d") {
+      if (shape === "note" || shape === "tab") {
         const label = elem[1];
         const uid = uidHandler.createUid(label);
         if (!uid) continue;
@@ -108,7 +110,7 @@ function composeDotExpr(specLines, options) {
         const edge = {
           shape: "edge",
           dir: "both",
-          style,
+          style: style,
           arrowtail: parsedYumlExpr[k][1],
           arrowhead: parsedYumlExpr[k][2],
           labeldistance: 2,
@@ -131,4 +133,4 @@ function composeDotExpr(specLines, options) {
   return `\tranksep=${RANKSEP}\n\trankdir=${options.dir}\n${dot}`;
 }
 
-module.exports = composeDotExpr;
+export default composeDotExpr;

@@ -1,5 +1,3 @@
-"use strict";
-
 const shapes = {
   actor: {
     svgNodes: [
@@ -23,7 +21,7 @@ const BLACK = "#000";
  * @param {boolean} isDark Option to get dark or light shapes
  * @returns {string} SVG document embedding shapes
  */
-module.exports = function(svg, isDark) {
+export default function(svg, isDark) {
   const expr = /<text(\s.*)>{img:(.*)}(.*)<\/text>/g;
 
   return svg.replace(expr, function(match, attributes, shapeName, label) {
@@ -51,4 +49,4 @@ module.exports = function(svg, isDark) {
       return match;
     }
   });
-};
+}

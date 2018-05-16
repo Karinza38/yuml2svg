@@ -1,11 +1,6 @@
 # yUML to SVG
 
-[![npm](https://img.shields.io/npm/v/yuml2svg.svg)](https://www.npmjs.com/package/yuml2svg)
-
-This project is a fork of
-[jaime-olivares/yuml-diagram](https://www.npmjs.com/package/yuml-diagram). You
-might want to check it out if you are more interested in a synchronous version
-of the API.
+This branch is a experiment for ES dynamic modules. Only works with Node 10+.
 
 ## Installation
 

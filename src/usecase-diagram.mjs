@@ -1,13 +1,10 @@
-"use strict";
-
-const {
+import {
   extractBgAndNote,
   formatLabel,
   serializeDot,
   splitYumlExpr,
-} = require("./yuml2dot-utils");
-const UIDHandler = require("./uidHandler");
-const Color = require("color");
+} from "./yuml2dot-utils.mjs";
+import Color from "color";
 
 const RANKSEP = 0.7;
 
@@ -137,4 +134,4 @@ function composeDotExpr(specLines, options) {
   return `\tranksep=${RANKSEP}\n\trankdir=${options.dir}\n${dot}`;
 }
 
-module.exports = composeDotExpr;
+export default composeDotExpr;

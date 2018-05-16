@@ -1,5 +1,3 @@
-"use strict";
-
 const handleStream = "./handle-stream";
 const dot2svg = "./dot2svg";
 const processEmbeddedImages = "./svg-utils";
@@ -40,7 +38,7 @@ const directions = {
  * @param {object[]} [renderOptions.files] - files to make available to Graphviz using Emscripten's in-memory filesystem
  * @returns {Promise<string>} The rendered diagram as a SVG document (or other format if specified in renderOptions)
  */
-const processYumlDocument = (input, options, vizOptions, renderOptions) => {
+export default (input, options, vizOptions, renderOptions) => {
   if (!options) options = {};
   if (!options.dir) options.dir = "TB";
   if (!options.type) options.type = "class";
@@ -49,12 +47,13 @@ const processYumlDocument = (input, options, vizOptions, renderOptions) => {
   const diagramInstructions = [];
 
   if (input.read && "function" === typeof input.read) {
-    return require(handleStream)(
-      input,
-      processLine(options, diagramInstructions)
-    ).then(() =>
-      processYumlData(diagramInstructions, options, vizOptions, renderOptions)
-    );
+    return import(handleStream)
+      .then(module =>
+        module.default(input, processLine(options, diagramInstructions))
+      )
+      .then(() =>
+        processYumlData(diagramInstructions, options, vizOptions, renderOptions)
+      );
   } else {
     input
       .toString()
@@ -90,19 +89,30 @@ const processYumlData = (
     const { isDark, dotHeaderOverrides } = options;
 
     try {
-      const renderingFunction = require(diagramTypes[options.type]);
-      const rendered = renderingFunction(diagramInstructions, options);
+      const renderingFunction = diagramTypes[options.type];
+      const renderingPromise = import(renderingFunction).then(module =>
+        module.default(diagramInstructions, options)
+      );
 
       // Sequence diagrams are rendered as SVG, not dot file -- and have no embedded images (I guess)
-      if (options.type === "sequence") {
-        return Promise.resolve(rendered);
-      } else {
-        return require(dot2svg)(
-          require(wrapDotDocument)(rendered, isDark, dotHeaderOverrides),
-          vizOptions,
-          renderOptions
-        ).then(svg => require(processEmbeddedImages)(svg, isDark));
-      }
+      return options.type === "sequence"
+        ? renderingPromise
+        : Promise.all([
+            Promise.all([
+              import(dot2svg).then(module => module.default),
+              import(wrapDotDocument).then(module => module.default),
+              renderingPromise,
+            ]).then(([dot2svg, wrapDotDocument, dotDocument]) =>
+              dot2svg(
+                wrapDotDocument(dotDocument, isDark),
+                vizOptions,
+                renderOptions
+              )
+            ),
+            import(processEmbeddedImages).then(module => module.default),
+          ]).then(([svg, processEmbeddedImages]) =>
+            processEmbeddedImages(svg, isDark)
+          );
     } catch (err) {
       return Promise.reject(err);
     }
@@ -166,5 +176,3 @@ const processDirectives = function(line, options) {
     }
   }
 };
-
-module.exports = processYumlDocument;

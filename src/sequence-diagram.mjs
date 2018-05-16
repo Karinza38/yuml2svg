@@ -1,12 +1,10 @@
-"use strict";
-
-const {
+import {
   extractBgAndNote,
   formatLabel,
   splitYumlExpr,
-} = require("./yuml2dot-utils");
-const UIDHandler = require("./uidHandler");
-const Renderer = require("./sequence-renderer");
+} from "./yuml2dot-utils.mjs";
+import UIDHandler from "./uidHandler.mjs";
+import Renderer from "./sequence-renderer.mjs";
 
 /*
 Unofficial syntax, based on a proposal specified in the Scruffy project, plus local additions
@@ -46,8 +44,8 @@ function parseYumlExpr(specLine) {
       const style = part.includes(">>")
         ? "async"
         : part.includes(".>")
-        ? "dashed"
-        : "solid";
+          ? "dashed"
+          : "solid";
 
       const prefix =
         part.startsWith("(") || part.startsWith(")") ? part.charAt(0) : "";
@@ -169,4 +167,4 @@ function composeSVG(specLines, options) {
   return renderer.svg_.serialize();
 }
 
-module.exports = composeSVG;
+export default composeSVG;

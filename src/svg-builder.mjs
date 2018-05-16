@@ -1,6 +1,4 @@
-"use strict";
-
-const getDOMWindow = require("./get-dom-window");
+import getDOMWindow from "./get-dom-window.mjs";
 
 const NS = "http://www.w3.org/2000/svg";
 const FONT_SIZE = 18;
@@ -10,7 +8,7 @@ const MARKER_SIZE = 6;
 const WHITE = "#fff";
 const BLACK = "#000";
 
-module.exports = function(isDark) {
+export default function(isDark) {
   const { document } = getDOMWindow();
   const svgElement = document.createElement("svg");
 
@@ -127,4 +125,4 @@ module.exports = function(isDark) {
 
   svgElement.setAttribute("xmlns", NS);
   svgElement.appendChild(this._createDefsElement());
-};
+}

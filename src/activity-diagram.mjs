@@ -1,14 +1,11 @@
-"use strict";
-
-const {
+import {
   escape_label,
   extractBgAndNote,
   serializeDotElements,
   splitYumlExpr,
-} = require("./yuml2dot-utils");
-const UIDHandler = require("./uidHandler");
-
-const Color = require("color");
+} from "./yuml2dot-utils.mjs";
+import UIDHandler from "./uidHandler.mjs";
+import Color from "color";
 
 const RANKSEP = 0.5;
 const HEADPORTS = { LR: "w", RL: "e", TB: "n" };
@@ -214,4 +211,4 @@ function addBarFacet(elements, name) {
   return null;
 }
 
-module.exports = composeDotExpr;
+export default composeDotExpr;

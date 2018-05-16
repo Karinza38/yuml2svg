@@ -1,13 +1,11 @@
-"use strict";
-
-const svg_builder = require("./svg-builder");
+import svg_builder from "./svg-builder.mjs";
 
 /*
 Rendering algorithms based on:
 https://github.com/sharvil/node-sequence-diagram
 */
 
-module.exports = function(actors, signals, uids, isDark) {
+export default function(actors, signals, uids, isDark) {
   const DIAGRAM_MARGIN = 10;
   const ACTOR_MARGIN = 10; // Margin around a actor
   const ACTOR_PADDING = 10; // Padding inside a actor
@@ -299,4 +297,4 @@ module.exports = function(actors, signals, uids, isDark) {
   }
 
   this.draw();
-};
+}

@@ -7,10 +7,8 @@ if (process.stdin.isTTY) {
   console.log("\tTakes yUML diagram via stdin and outputs SVG to stdout.");
   console.log("\tOption: --dark to generate SVG with dark mode.");
 } else {
-  const yuml2svg = require("../index");
   const isDark = process.argv[2] === "--dark";
-  yuml2svg(process.stdin, { isDark }).then(
-    svg => process.stdout.write(svg),
-    console.error
-  );
+  import("../index")
+    .then(module => module.default(process.stdin, { isDark }))
+    .then(svg => process.stdout.write(svg), console.error);
 }
