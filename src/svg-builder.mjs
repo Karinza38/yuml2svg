@@ -1,5 +1,3 @@
-import getDOMWindow from "./get-dom-window.mjs";
-
 const NS = "http://www.w3.org/2000/svg";
 const FONT_SIZE = 18;
 const CHAR_WIDTH = 8.5;

@@ -1,16 +1,16 @@
-const handleStream = "./handle-stream";
-const dot2svg = "./dot2svg";
-const processEmbeddedImages = "./svg-utils";
-const wrapDotDocument = "./wrapDotDocument";
+const handleStream = "./handle-stream.mjs";
+const dot2svg = "./dot2svg.mjs";
+const processEmbeddedImages = "./svg-utils.mjs";
+const wrapDotDocument = "./wrapDotDocument.mjs";
 
 const diagramTypes = {
-  class: "./class-diagram",
-  usecase: "./usecase-diagram",
-  activity: "./activity-diagram",
-  state: "./state-diagram",
-  deployment: "./deployment-diagram",
-  package: "./package-diagram",
-  sequence: "./sequence-diagram",
+  class: "./class-diagram.mjs",
+  usecase: "./usecase-diagram.mjs",
+  activity: "./activity-diagram.mjs",
+  state: "./state-diagram.mjs",
+  deployment: "./deployment-diagram.mjs",
+  package: "./package-diagram.mjs",
+  sequence: "./sequence-diagram.mjs",
 };
 
 const directions = {
@@ -40,7 +40,7 @@ const directions = {
  */
 export default (input, options, vizOptions, renderOptions) => {
   if (!options) options = {};
-  if (!options.dir) options.dir = "TB";
+  if (!options.dir) options.dir = "TB.mjs";
   if (!options.type) options.type = "class";
   if (!options.isDark) options.isDark = false;
 
@@ -48,8 +48,9 @@ export default (input, options, vizOptions, renderOptions) => {
 
   if (input.read && "function" === typeof input.read) {
     return import(handleStream)
-      .then(module =>
-        module.default(input, processLine(options, diagramInstructions))
+      .then(module => module.default)
+      .then(handleStream =>
+        handleStream(input, processLine(options, diagramInstructions))
       )
       .then(() =>
         processYumlData(diagramInstructions, options, vizOptions, renderOptions)

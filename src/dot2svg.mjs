@@ -1,10 +1,9 @@
-"use strict";
-
-const Viz = require("viz.js");
+import Viz from "viz.js";
 
 if (typeof IS_BROWSER === "undefined" || !IS_BROWSER) {
-  var { Module, render } = require("viz.js/full.render");
-  var viz = new Viz({ Module, render });
+  var viz = import("viz.js/full.render.js")
+    .then(module => module.default)
+    .then(({ Module, render }) => new Viz({ Module, render }));
 }
 
 /**
@@ -13,12 +12,14 @@ if (typeof IS_BROWSER === "undefined" || !IS_BROWSER) {
  * @param {object} [vizOptions] @see https://github.com/mdaines/viz.js/wiki/API#new-vizoptions
  * @param {object} [renderOptions] @see https://github.com/mdaines/viz.js/wiki/API#render-options
  */
-module.exports = (dot, vizOptions, renderOptions) => {
-  const renderer = vizOptions ? new Viz(vizOptions) : viz;
+export default async (dot, vizOptions, renderOptions) => {
+  const renderer = vizOptions ? new Viz(vizOptions) : await viz;
   return renderer.renderString(dot, renderOptions).catch(err => {
     /** @see https://github.com/mdaines/viz.js/wiki/Caveats */
     if (!vizOptions) {
-      viz = new Viz({ Module, render });
+      viz = import("viz.js/full.render.js")
+        .then(module => module.default)
+        .then(({ Module, render }) => new Viz({ Module, render }));
     }
     throw err;
   });

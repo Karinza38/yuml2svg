@@ -1,8 +1,6 @@
-"use strict";
+import { recordName } from "./yuml2dot-utils";
 
-const { recordName } = require("./yuml2dot-utils");
-
-module.exports = class {
+export default class {
   constructor() {
     this._uidNb = 0;
     this._uids = {};
@@ -29,4 +27,4 @@ module.exports = class {
   getUid(label) {
     return this._uids[recordName(label)];
   }
-};
+}
