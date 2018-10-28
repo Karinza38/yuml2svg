@@ -61,7 +61,7 @@ const splitYumlExpr = function*(line, separators, escape = "\\") {
 const extractBgAndNote = function(part, allowNote) {
   const ret = { bg: "", isNote: false, luma: 128 };
 
-  const bgParts = /^(.*)\{ *bg *: *([a-zA-Z]+\d*|#[0-9a-fA-F]{6}) *\}$/.exec(
+  const bgParts = /^(.*)\{\s*bg\s*:\s*([a-zA-Z]+\d*|#[0-9a-fA-F]{3,6})\s*\}$/.exec(
     part
   );
   if (bgParts !== null && bgParts.length === 3) {
