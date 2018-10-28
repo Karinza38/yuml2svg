@@ -132,28 +132,27 @@ const serializeDot = function(node) {
         "<": "&lt;",
         ">": "&gt;",
       };
+
       // If label contains a pipe, we need to use an HTML-like label
-      return (
-        '[fontsize=10,label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="9">' +
-        node.label
-          .split("|")
-          .map(text => {
-            let htmlTDNode = "<TD";
-            if (text.startsWith("<")) {
-              const closingTagPosition = text.indexOf(">");
-              htmlTDNode += ` PORT="${text.substr(1, closingTagPosition - 1)}"`;
-              text = text.substr(closingTagPosition + 1);
-            }
-            htmlTDNode += ">";
-            for (const char of text) {
-              htmlTDNode += ESCAPED_CHARS[char] || char;
-            }
-            htmlTDNode += "</TD>";
-            return `<TR>${htmlTDNode}</TR>`;
-          })
-          .join("") +
-        "</TABLE>>]"
-      );
+      return `[fontsize=10,label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="9" ${
+        node.fillcolor ? `BGCOLOR="${node.fillcolor}"` : ""
+      } ${node.fontcolor ? `COLOR="${node.fontcolor}"` : ""}>${node.label
+        .split("|")
+        .map(text => {
+          let htmlTDNode = "<TD";
+          if (text.startsWith("<")) {
+            const closingTagPosition = text.indexOf(">");
+            htmlTDNode += ` PORT="${text.substr(1, closingTagPosition - 1)}"`;
+            text = text.substr(closingTagPosition + 1);
+          }
+          htmlTDNode += ">";
+          for (const char of text) {
+            htmlTDNode += ESCAPED_CHARS[char] || char;
+          }
+          htmlTDNode += "</TD>";
+          return `<TR>${htmlTDNode}</TR>`;
+        })
+        .join("")}</TABLE>>]`;
     }
 
     // To avoid this issue, we can use a "rectangle" shape
