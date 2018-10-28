@@ -78,7 +78,6 @@ function composeSVG(specLines, options) {
 
   for (const line of specLines) {
     const parsedYumlExpr = parseYumlExpr(line);
-    const parsedYumlExprLastIndex = parsedYumlExpr.length - 1;
 
     for (const elem of parsedYumlExpr) {
       const [type, label] = elem;

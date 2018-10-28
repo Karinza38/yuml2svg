@@ -241,12 +241,7 @@ module.exports = function(actors, signals, uids, isDark) {
     );
 
     if (note.hasOwnProperty("bgcolor"))
-      noteShape.setAttribute(
-        "style",
-        noteShape
-          .getAttribute("style")
-          .replace("fill: none", "fill: " + note.bgcolor)
-      );
+      noteShape.setAttribute("fill", note.bgcolor);
 
     this.svg_.getDocument().appendChild(noteShape);
 

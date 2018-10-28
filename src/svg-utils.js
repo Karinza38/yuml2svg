@@ -34,9 +34,9 @@ module.exports = function(svg, isDark) {
         const [yAttr, translateY] = /\sy=\"(-?[0-9\.]+)\"/.exec(attributes);
 
         return (
-          `<g transform="translate(${translateX},${translateY})" style="fill:none;stroke:${
+          `<g transform="translate(${translateX},${translateY})" fill="none" stroke="${
             isDark ? WHITE : BLACK
-          };stroke-width:1px">${img.svgNodes.join("")}</g><text` +
+          }" stroke-width="1">${img.svgNodes.join("")}</g><text` +
           attributes
             .replace(xAttr, ` x="${parseFloat(translateX) + img.translateX}"`)
             .replace(yAttr, ` y="${parseFloat(translateY) + img.translateY}"`) +

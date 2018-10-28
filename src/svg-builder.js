@@ -48,8 +48,8 @@ module.exports = function(isDark) {
 
       text.setAttribute("x", x);
       text.setAttribute("y", y);
-      text.style.textAnchor = "middle";
-      text.style.alignmentBaseline = "central";
+      text.setAttribute("text-anchor", "middle");
+      text.setAttribute("alignment-baseline", "central");
 
       y += FONT_SIZE;
 
