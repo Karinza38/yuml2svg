@@ -2,7 +2,7 @@
   "name": "yuml2svg",
   "displayName": "yUML to SVG",
   "description": "UML diagramming tool based on the yUML syntax",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "license": "MIT",
   "repository": {
     "type": "git",
