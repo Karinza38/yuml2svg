@@ -39,7 +39,7 @@ module.exports = function(isDark) {
     const g = document.createElementNS(NS, "g");
     const lines = message.split("\n");
 
-    y -= (lines.length - 1) / 2 * FONT_SIZE;
+    y -= ((lines.length - 1) / 2) * FONT_SIZE;
 
     for (const lineText of lines) {
       const text = document.createElementNS(NS, "text");
