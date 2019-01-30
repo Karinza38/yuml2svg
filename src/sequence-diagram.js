@@ -39,13 +39,15 @@ function parseYumlExpr(specLine) {
         ret.bg,
         ret.fontcolor,
       ]);
+    } else if (part === "-") {
+      exprs.push(["signal", "", "", "dashed", ""]); // note connector
     } else if (part.includes(">")) {
       // message
       const style = part.includes(">>")
         ? "async"
         : part.includes(".>")
-          ? "dashed"
-          : "solid";
+        ? "dashed"
+        : "solid";
 
       const prefix =
         part.startsWith("(") || part.startsWith(")") ? part.charAt(0) : "";
