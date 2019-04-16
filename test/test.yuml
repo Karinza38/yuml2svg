@@ -1,0 +1,5 @@
+// {type:class}
+// {direction:topDown}
+[a]->[<<b>>|c]
+[e]->[<<b>>]
+[f]->[c]

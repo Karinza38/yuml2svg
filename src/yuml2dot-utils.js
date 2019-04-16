@@ -19,6 +19,13 @@ const escape_label = function(label) {
   return newLabel;
 };
 
+const unescape_label = label =>
+  label
+    .replace(/\\\{/g, "{")
+    .replace(/\\\}/g, "}")
+    .replace(/\\</g, "<")
+    .replace(/\\>/g, ">");
+
 const splitYumlExpr = function*(line, separators, escape = "\\") {
   const SEPARATOR_END = {
     "[": "]",
@@ -146,7 +153,7 @@ const serializeDot = function(node) {
             text = text.substr(closingTagPosition + 1);
           }
           htmlTDNode += ">";
-          for (const char of text) {
+          for (const char of unescape_label(text)) {
             htmlTDNode += ESCAPED_CHARS[char] || char;
           }
           htmlTDNode += "</TD>";

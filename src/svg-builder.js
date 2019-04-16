@@ -45,6 +45,7 @@ module.exports = function(isDark) {
       const text = document.createElementNS(NS, "text");
       text.textContent = lineText;
       text.setAttribute("fill", color || isDark ? WHITE : BLACK);
+      text.setAttribute("font-family", "Helvetica,sans-Serif");
 
       text.setAttribute("x", x);
       text.setAttribute("y", y);
