@@ -1,5 +1,11 @@
 # Change Log
 
+## 4.2.1
+
+- Fix issue with class and use of angle brackets
+- Fix issue with class details not shown properly
+- Upgrade dependencies
+
 ## 4.2.0
 
 - Fix issue with sequence diagram arrows
