@@ -32,7 +32,7 @@
     "yuml2svg": "bin/yuml2svg.js"
   },
   "scripts": {
-    "lint": "eslint ./src/",
+    "lint": "eslint --ext=.js,.mjs ./src/",
     "test": "node --experimental-modules test/bootstrap.js"
   },
   "dependencies": {
