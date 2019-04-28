@@ -1,4 +1,4 @@
-import { recordName } from "./yuml2dot-utils";
+import { recordName } from "./yuml2dot-utils.mjs";
 
 export default class {
   constructor() {

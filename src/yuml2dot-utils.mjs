@@ -24,7 +24,7 @@ const unescape_label = label =>
     .replace(/\\</g, "<")
     .replace(/\\>/g, ">");
 
-const splitYumlExpr = function*(line, separators, escape = "\\") {
+export const splitYumlExpr = function*(line, separators, escape = "\\") {
   const SEPARATOR_END = {
     "[": "]",
     "<": ">",

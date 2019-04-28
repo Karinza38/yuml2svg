@@ -4,6 +4,7 @@ import {
   serializeDot,
   splitYumlExpr,
 } from "./yuml2dot-utils.mjs";
+import UIDHandler from "./uidHandler.mjs";
 import Color from "color";
 
 const RANKSEP = 0.5;

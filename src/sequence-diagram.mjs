@@ -4,7 +4,6 @@ import {
   splitYumlExpr,
 } from "./yuml2dot-utils.mjs";
 import UIDHandler from "./uidHandler.mjs";
-import Renderer from "./sequence-renderer.mjs";
 
 /*
 Unofficial syntax, based on a proposal specified in the Scruffy project, plus local additions
@@ -158,7 +157,7 @@ function composeSVG(specLines, options) {
     }
   }
 
-  return import("./sequence-renderer.js")
+  return import("./sequence-renderer.mjs")
     .then(module => module.default)
     .then(
       Renderer =>
