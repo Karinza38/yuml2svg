@@ -1,0 +1,5 @@
+// {type:class}
+// {direction:topDown}
+[note: You can stick notes on diagrams too!{bg:cornsilk}]
+[Customer]<>1-orders 0..*>[Order]
+[Order]-[note:asdf]
