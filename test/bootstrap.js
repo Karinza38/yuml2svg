@@ -1,7 +1,9 @@
 import { promises as fs } from "fs";
 import { dirname } from "path";
+import { fileURLToPath } from "url";
 
-const __dirname = dirname(new URL(import.meta.url).pathname);
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 
 fs.readdir(__dirname)
   .then(files =>
