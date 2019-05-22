@@ -10,23 +10,21 @@ const inputDir = join(__dirname, "old_issues");
 
 export default fs.readdir(inputDir).then(files =>
   Promise.all(
-    files
-      .filter(filename => filename.endsWith(".yuml"))
-      .map(filename => join(inputDir, filename))
-      .map(path =>
-        Promise.all([
-          fs
-            .readFile(path)
-            .then(input => yuml2svg(input))
-            .then(Buffer.from),
-          fs.readFile(path + ".svg"),
-        ]).then(([actualOutput, expectedOutput]) => {
-          if (Buffer.compare(actualOutput, expectedOutput) === 0) {
-            return Promise.resolve("Success");
-          } else {
-            return Promise.reject("An old bug file as been modified");
-          }
-        })
-      )
+    files.filter(filename => filename.endsWith(".yuml")).map(async filename => {
+      const path = join(inputDir, filename);
+      const [actualOutput, expectedOutput] = await Promise.all([
+        fs
+          .readFile(path)
+          .then(input => yuml2svg(input))
+          .then(Buffer.from),
+        fs.readFile(path + ".svg"),
+      ]);
+
+      if (Buffer.compare(actualOutput, expectedOutput) === 0) {
+        return `Success for ${filename}`;
+      } else {
+        return Promise.reject(new Error(`Wrong output for ${filename}`));
+      }
+    })
   )
 );

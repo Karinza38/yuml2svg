@@ -13,10 +13,14 @@ export default Promise.all([
   fs.readFile(outputFile),
 ]).then(([actualOutput, expectedOutput]) => {
   if (Buffer.compare(actualOutput, expectedOutput) === 0) {
-    return Promise.resolve("Success");
+    return Promise.resolve("Success for dark diagram with streams");
   } else {
     console.warn("Output of dark diagram has been modified");
 
-    return fs.writeFile(outputFile, actualOutput);
+    return fs
+      .writeFile(outputFile, actualOutput)
+      .then(() =>
+        Promise.reject(new Error("Wrong output for dark diagram with streams"))
+      );
   }
 });

@@ -16,6 +16,9 @@ export default fs
       snippets.map(([name, { body }]) =>
         yuml2svg(body.join("\n"))
           .then(svg => fs.writeFile(join(__dirname, name + ".svg"), svg))
+          .then(() =>
+            Promise.resolve(`${name} example diagram generated successfully`)
+          )
           .catch(e => {
             e.cause = "snippet: " + name;
             return Promise.reject(e);

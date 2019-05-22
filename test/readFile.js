@@ -17,10 +17,14 @@ export default Promise.all([
   fs.readFile(outputFile),
 ]).then(([actualOutput, expectedOutput]) => {
   if (Buffer.compare(actualOutput, expectedOutput) === 0) {
-    return Promise.resolve("Success");
+    return Promise.resolve("Success for light diagram with Buffers");
   } else {
     console.warn("Output of light diagram has been modified");
 
-    return fs.writeFile(outputFile, actualOutput);
+    return fs
+      .writeFile(outputFile, actualOutput)
+      .then(() =>
+        Promise.reject(new Error("Wrong output for light diagram with Buffers"))
+      );
   }
 });
