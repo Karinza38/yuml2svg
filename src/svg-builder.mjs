@@ -111,7 +111,7 @@ export default import("./get-dom-window.mjs")
           filledArrowPath.setAttribute("stroke", "none");
           openArrowPath.setAttribute("stroke-width", "1");
           filledArrowPath.setAttribute("fill", isDark ? WHITE : BLACK);
-          openArrowPath.setAttribute("fill", isDark ? WHITE : BLACK);
+          openArrowPath.setAttribute("fill", "none");
 
           openArrow.setAttribute("id", "arrow-open");
           openArrow.setAttribute("refX", MARKER_SIZE);
