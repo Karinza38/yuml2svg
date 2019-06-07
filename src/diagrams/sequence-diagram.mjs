@@ -159,11 +159,14 @@ function composeSVG(specLines, options) {
 
   return import("./sequence-renderer.mjs")
     .then(module => module.default)
-    .then(
-      Renderer =>
-        new Renderer(actors, signals, uidHandler._uids, options.isDark)
-    )
-    .then(renderer => renderer.svg_.serialize());
+    .then(Renderer =>
+      new Renderer(
+        actors,
+        signals,
+        uidHandler._uids,
+        options.isDark
+      ).svg_.serialize()
+    );
 }
 
 export default composeSVG;
