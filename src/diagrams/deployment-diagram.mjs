@@ -3,8 +3,8 @@ import {
   formatLabel,
   serializeDot,
   splitYumlExpr,
-} from "./yuml2dot-utils.mjs";
-import UIDHandler from "./uidHandler.mjs";
+} from "../utils/yuml2dot-utils.mjs";
+import UIDHandler from "../utils/uidHandler.mjs";
 import Color from "color";
 
 const RANKSEP = 0.5;

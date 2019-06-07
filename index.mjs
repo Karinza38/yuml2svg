@@ -42,7 +42,7 @@ export default (input, options, vizOptions, renderOptions) => {
   const diagramInstructions = [];
 
   if (input.read && "function" === typeof input.read) {
-    return import(`./src/handle-stream.mjs`)
+    return import(`./src/utils/handle-stream.mjs`)
       .then(module => module.default)
       .then(handleStream =>
         handleStream(input, processLine(options, diagramInstructions))
@@ -86,7 +86,7 @@ const processYumlData = (
 
     try {
       const renderingPromise = import(
-        `./src/${diagramTypes[options.type]}.mjs`
+        `./src/diagrams/${diagramTypes[options.type]}.mjs`
       ).then(module => module.default(diagramInstructions, options));
 
       // Sequence diagrams are rendered as SVG, not dot file -- and have no embedded images (I guess)
@@ -94,8 +94,8 @@ const processYumlData = (
         ? renderingPromise
         : Promise.all([
             Promise.all([
-              import(`./src/dot2svg.mjs`).then(module => module.default),
-              import(`./src/wrapDotDocument.mjs`).then(
+              import(`./src/utils/dot2svg.mjs`).then(module => module.default),
+              import(`./src/utils/wrapDotDocument.mjs`).then(
                 module => module.default
               ),
               renderingPromise,
@@ -106,7 +106,7 @@ const processYumlData = (
                 renderOptions
               )
             ),
-            import(`./src/svg-utils.mjs`).then(module => module.default),
+            import(`./src/utils/svg-utils.mjs`).then(module => module.default),
           ]).then(([svg, processEmbeddedImages]) =>
             processEmbeddedImages(svg, isDark)
           );

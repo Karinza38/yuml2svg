@@ -3,7 +3,7 @@ Rendering algorithms based on:
 https://github.com/sharvil/node-sequence-diagram
 */
 
-export default import("./svg-builder.mjs")
+export default import("../utils/svg-builder.mjs")
   .then(module => module.default)
   .then(
     SVGBuilder =>

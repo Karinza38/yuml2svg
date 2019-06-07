@@ -2,8 +2,8 @@ import {
   extractBgAndNote,
   formatLabel,
   splitYumlExpr,
-} from "./yuml2dot-utils.mjs";
-import UIDHandler from "./uidHandler.mjs";
+} from "../utils/yuml2dot-utils.mjs";
+import UIDHandler from "../utils/uidHandler.mjs";
 
 /*
 Unofficial syntax, based on a proposal specified in the Scruffy project, plus local additions
