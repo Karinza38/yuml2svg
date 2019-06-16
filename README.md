@@ -1,26 +1,27 @@
 # yUML to SVG
 
-This branch is a experiment for ES dynamic modules. Only works with Node 10+.
+This branch is a experiment for ES dynamic modules. Only works with Node 10 LTS
+and Node 12+.
 
 ## Installation
 
 You can install it with yarn:
 
 ```bash
-yarn global add yuml2svg # For CLI usage
-yarn add yuml2svg # As local dependency
+yarn global add yuml2svg@beta # For CLI usage
+yarn add yuml2svg@beta # As local dependency
 ```
 
 Or with npm:
 
 ```bash
-npm --global install yuml2svg # For CLI usage
-npm install yuml2svg --save # As local dependency
+npm --global install yuml2svg@beta # For CLI usage
+npm install yuml2svg@beta --save # As local dependency
 ```
 
 ## Features
 
-* Embedded rendering engine: **No need to call an external web service**
+- Embedded rendering engine: **No need to call an external web service**
 
 ## yUML syntax
 
@@ -64,12 +65,12 @@ as a `string`.
 
 > The options for the rendering are:
 >
-> * `dir`: `string` The direction of the diagram "TB" (default) - topDown,
+> - `dir`: `string` The direction of the diagram "TB" (default) - topDown,
 >   "LR" - leftToRight, "RL" - rightToLeft
-> * `type`: `string` The type of SVG - "class" (default), "usecase", "activity",
+> - `type`: `string` The type of SVG - "class" (default), "usecase", "activity",
 >   "state", "deployment", "package", "sequence".
-> * `isDark`: `boolean` Option to get dark or light diagram
-> * `dotHeaderOverrides`: `object` Option to customize output (not supported for
+> - `isDark`: `boolean` Option to get dark or light diagram
+> - `dotHeaderOverrides`: `object` Option to customize output (not supported for
 >   sequence diagram)
 >
 > Please check out [Viz.js wiki](//github.com/mdaines/viz.js/wiki/2.0.0-API) to
@@ -191,8 +192,8 @@ You can find a working example of a browser implementation using webpack here:
 
 ## Credits
 
-* Thanks to the [mdaines](//github.com/mdaines)'s port of
+- Thanks to the [mdaines](//github.com/mdaines)'s port of
   [Graphviz](//www.graphviz.org/) for JavaScript
   [viz.js](//github.com/mdaines/viz.js).
-* Thanks to the [jaime-olivares](//github.com/jaime-olivares)'s
+- Thanks to the [jaime-olivares](//github.com/jaime-olivares)'s
   [VSCode extension](//github.com/jaime-olivares/vscode-yuml).
