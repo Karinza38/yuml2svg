@@ -6,14 +6,12 @@ const { join } = require("path");
 const FLAG = "--experimental-modules";
 const ACTUAL_MODULE_PATH = join(__dirname, "yuml2svg");
 
-const subprocess = spawn(process.argv0, [FLAG, ACTUAL_MODULE_PATH], {
-  windowsHide: true,
-  stdio: "pipe",
-});
+const options = [FLAG, ACTUAL_MODULE_PATH].concat(process.argv.slice(2));
 
-process.stdin.pipe(subprocess.stdin);
-subprocess.stderr.pipe(process.stderr);
-subprocess.stdout.pipe(process.stdout);
+const subprocess = spawn(process.argv0, options, {
+  windowsHide: true,
+  stdio: "inherit",
+});
 
 subprocess.on("error", console.error);
 subprocess.on("exit", code => {
