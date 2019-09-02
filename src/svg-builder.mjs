@@ -11,7 +11,7 @@ export default import("./get-dom-window.mjs")
   .then(
     ({ document }) =>
       function(isDark) {
-        const svgElement = document.createElement("svg");
+        const svgElement = document.createElementNS(NS, "svg");
 
         this.getDocument = function() {
           return svgElement;
