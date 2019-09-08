@@ -43,8 +43,8 @@ function parseYumlExpr(specLine) {
       const style = part.includes(">>")
         ? "async"
         : part.includes(".>")
-          ? "dashed"
-          : "solid";
+        ? "dashed"
+        : "solid";
 
       const prefix =
         part.startsWith("(") || part.startsWith(")") ? part.charAt(0) : "";
