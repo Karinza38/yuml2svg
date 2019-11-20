@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 
+/**
+ * Runs the binary with experimental flag for node versions that don't 
+ * support ECMAScript modules natively.
+ */
+
 const { spawn } = require("child_process");
 const { join } = require("path");
 

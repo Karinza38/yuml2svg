@@ -8,5 +8,14 @@ if (process.stdin.isTTY) {
   const isDark = process.argv[2] === "--dark";
   import("../index.mjs")
     .then(module => module.default(process.stdin, { isDark }))
-    .then(svg => process.stdout.write(svg), console.error);
+    .then(svg => process.stdout.write(svg))
+    .catch(e => {
+      console.error(e);
+      if (e.message === "Not supported") {
+        console.warn(
+          "It seems ES Modules support is not available on the node version",
+          "you are using. You can try to run `yuml2svg-compat` instead."
+        );
+      }
+    });
 }

@@ -29,7 +29,8 @@
   "type": "module",
   "main": "./index.mjs",
   "bin": {
-    "yuml2svg": "bin/yuml2svg.cjs"
+    "yuml2svg": "bin/yuml2svg",
+    "yuml2svg-compat": "bin/yuml2svg.cjs"
   },
   "scripts": {
     "lint": "eslint --ext=.js,.mjs ./src/",
