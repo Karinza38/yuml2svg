@@ -1,8 +1,3 @@
-const handleStream = "handle-stream";
-const dot2svg = "dot2svg";
-const processEmbeddedImages = "svg-utils";
-const wrapDotDocument = "wrapDotDocument";
-
 const diagramTypes = {
   class: "class-diagram",
   usecase: "usecase-diagram",
@@ -47,7 +42,7 @@ export default (input, options, vizOptions, renderOptions) => {
   const diagramInstructions = [];
 
   if (input.read && "function" === typeof input.read) {
-    return import(`./src/${handleStream}.mjs`)
+    return import(`./src/handle-stream.mjs`)
       .then(module => module.default)
       .then(handleStream =>
         handleStream(input, processLine(options, diagramInstructions))
@@ -90,18 +85,17 @@ const processYumlData = (
     const { isDark, dotHeaderOverrides } = options;
 
     try {
-      const renderingFunction = diagramTypes[options.type];
-      const renderingPromise = import(`./src/${renderingFunction}.mjs`).then(
-        module => module.default(diagramInstructions, options)
-      );
+      const renderingPromise = import(
+        `./src/${diagramTypes[options.type]}.mjs`
+      ).then(module => module.default(diagramInstructions, options));
 
       // Sequence diagrams are rendered as SVG, not dot file -- and have no embedded images (I guess)
       return options.type === "sequence"
         ? renderingPromise
         : Promise.all([
             Promise.all([
-              import(`./src/${dot2svg}.mjs`).then(module => module.default),
-              import(`./src/${wrapDotDocument}.mjs`).then(
+              import(`./src/dot2svg.mjs`).then(module => module.default),
+              import(`./src/wrapDotDocument.mjs`).then(
                 module => module.default
               ),
               renderingPromise,
@@ -112,9 +106,7 @@ const processYumlData = (
                 renderOptions
               )
             ),
-            import(`./src/${processEmbeddedImages}.mjs`).then(
-              module => module.default
-            ),
+            import(`./src/svg-utils.mjs`).then(module => module.default),
           ]).then(([svg, processEmbeddedImages]) =>
             processEmbeddedImages(svg, isDark)
           );
