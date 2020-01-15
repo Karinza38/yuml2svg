@@ -1,7 +1,7 @@
 {
   "imports": {
     "color": "https://dev.jspm.io/color@3.1.2",
-    "jsdom": "https://dev.jspm.io/jsdom@15.1.1",
+    "jsdom": "https://dev.jspm.io/jsdom@16.0.0",
     "viz.js": "https://dev.jspm.io/viz.js@2.1.2/viz.es.js",
     "viz.js/": "https://dev.jspm.io/viz.js@2.1.2/"
   }
