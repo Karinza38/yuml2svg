@@ -14,7 +14,7 @@ Allows the creation of offline UML diagrams based on the
 
 - Node.js v12+ _(yuml2svg v5 uses ECMAScript modules, support is still
   experimental at the time of writing)_.
-- Browser support through Webpack or rollup bundling.
+- Browser support through import maps or bundling (WebPack, Rollup, etc.).
 - Unofficial support for Node.js v10 LTS (with the `--experimental-modules` CLI
   flag).
 - Unofficial support for Deno.
@@ -24,15 +24,15 @@ Allows the creation of offline UML diagrams based on the
 You can install it with yarn:
 
 ```shell
-yarn global add yuml2svg@beta # For CLI usage
-yarn add yuml2svg@beta # As local dependency
+yarn global add yuml2svg # For CLI usage
+yarn add yuml2svg # As local dependency
 ```
 
 Or with npm:
 
 ```shell
-npm --global install yuml2svg@beta # For CLI usage
-npm install yuml2svg@beta --save # As local dependency
+npm --global install yuml2svg # For CLI usage
+npm install yuml2svg # As local dependency
 ```
 
 ## Features
