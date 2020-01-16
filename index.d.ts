@@ -1,5 +1,9 @@
 declare const yuml2svg: (
-  input: string | Uint8Array | ReadableStreamBYOBReader,
+  input:
+    | string
+    | Uint8Array
+    | ReadableStreamDefaultReader
+    | ReadableStreamBYOBReader,
   options?: {
     isDark?: boolean;
     dotHeaderOverrides?: {

@@ -182,8 +182,27 @@ function renderFile(filePath, callback) {
 You can find a working example of a browser implementation using webpack here:
 [yuml2svg-playground](//github.com/aduh95/yuml2svg-playground).
 
-> The Stream API in not currently supported on the browser, the API can only
-> deal with strings.
+If you want to use streams, pass a `ReadableStreamDefaultReader` or
+`ReadableStreamBYOBReader` object to the API:
+
+```js
+import yuml2svg from "https://dev.jspm.io/yuml2svg@5";
+
+fetch("https://raw.githubusercontent.com/aduh95/yuml2svg/master/test/test.yuml")
+  .then(response =>
+    response.ok
+      ? yuml2svg(response.body.getReader())
+      : Promise.reject(response.text())
+  )
+  .then(svg =>
+    document.body.append(
+      new DOMParser().parseFromString(svg, "text/xml").documentElement
+    )
+  )
+  .catch(console.error);
+```
+
+> Note: Only UTF-8 is supported when using streams.
 
 ## Credits
 
