@@ -1,5 +1,16 @@
 # Change Log
 
+## 5.0.0
+
+- **Breaking** Minimal Node.js version bump to 12
+- Upgrade to ECMAScript modules
+- First-class browser support (with import-maps)
+- Add support for deno (experimental)
+
+## 4.2.2
+
+- Bump version number (npm release on wrong channel)
+
 ## 4.2.1
 
 - Fix issue with class and use of angle brackets
