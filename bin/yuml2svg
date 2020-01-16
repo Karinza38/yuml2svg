@@ -10,12 +10,15 @@ if (process.stdin.isTTY) {
     .then(module => module.default(process.stdin, { isDark }))
     .then(svg => process.stdout.write(svg))
     .catch(e => {
-      console.error(e);
       if (e.message === "Not supported") {
-        console.warn(
-          "It seems ES Modules support is not available on the node version",
-          "you are using. You can try to run `yuml2svg-compat` instead."
-        );
+        try {
+          console.warn("Trying to launch in compat mode…");
+          require("./yuml2svg.cjs");
+        } catch (e) {
+          console.error(e);
+        }
+      } else {
+        console.error(e);
       }
     });
 }

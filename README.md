@@ -73,13 +73,6 @@ cat diagram.yuml | yuml2svg > diagram.svg
 cat diagram.yuml | yuml2svg --dark > diagram.svg
 ```
 
-> If the Node.js version you are using doesn't support ES modules, you might get
-> an error; you can use the `yuml-compat` command to work around the issue:
->
-> ```shell
-> cat diagram.yuml | yuml2svg-compat --dark
-> ```
-
 ### Node.JS API
 
 The API exports a function that accepts as arguments:
