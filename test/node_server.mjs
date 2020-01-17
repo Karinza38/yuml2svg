@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * Creates a very simple test server with Node.js to test WHATWG stream support.
  *
