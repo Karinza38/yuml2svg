@@ -20,14 +20,21 @@ const __dirname = path.dirname(__filename);
 const PROJECT_DIR = path.join(__dirname, "..");
 
 const requestListener = (req, res) => {
+  const jsMIME = "application/javascript";
   if (req.url === "/") {
+    const workerURL = "https://unpkg.com/viz.js@2.1.2/full.render.js";
     res.setHeader("Content-Type", "text/html");
+    res.setHeader("Content-Security-Policy", "worker-src data:");
     fs.readFile(path.join(PROJECT_DIR, "/bin/importmap.json"), "utf8")
       .then(importMap => {
         res.end(
           `<script type="importmap">${importMap}</script>
             <script type="module">
                 import yuml2svg from "/index.mjs";
+
+                const vizOptions = {
+                  workerURL: "data:${jsMIME},importScripts('${workerURL}')",
+                };
 
                 console.time();
                 
@@ -38,7 +45,7 @@ const requestListener = (req, res) => {
                 fetch('/test/test.yuml')
                     .then(response =>
                         response.ok
-                        ? yuml2svg(response.body.getReader())
+                        ? yuml2svg(response.body.getReader(), {}, vizOptions)
                         : Promise.reject(response.text())
                     )
                     .then(svg => {
@@ -66,7 +73,7 @@ const requestListener = (req, res) => {
     const resolvedPath = path.join(PROJECT_DIR, req.url);
 
     // Required for ES modules
-    res.setHeader("Content-Type", "application/javascript");
+    res.setHeader("Content-Type", jsMIME);
 
     fs.access(resolvedPath, constants.R_OK)
       .then(() => {

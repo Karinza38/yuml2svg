@@ -181,10 +181,16 @@ If you want to use streams, pass a `ReadableStreamDefaultReader` or
 ```js
 import yuml2svg from "https://dev.jspm.io/yuml2svg@5";
 
+const yumlOptions = {};
+const vizOptions = {
+  workerURL:
+    "data:application/javascript,importScripts('https://unpkg.com/viz.js@2.1.2/full.render.js')",
+};
+
 fetch("https://raw.githubusercontent.com/aduh95/yuml2svg/master/test/test.yuml")
   .then(response =>
     response.ok
-      ? yuml2svg(response.body.getReader())
+      ? yuml2svg(response.body.getReader(), yumlOptions, vizOptions)
       : Promise.reject(response.text())
   )
   .then(svg =>
