@@ -1,16 +1,10 @@
 import Viz from "viz.js";
-let viz;
+let viz, oldVizOptions;
 
-if (typeof IS_BROWSER === "undefined" || !IS_BROWSER) {
-  var createNewVizInstance = () =>
-    import("viz.js/full.render.js")
-      .then(module => module.default)
-      .then(({ Module, render }) => new Viz({ Module, render }));
-
-  viz = createNewVizInstance();
-} else {
-  var oldVizOptions;
-}
+const createVizInstanceWithDefaultOptions = () =>
+  import("viz.js/full.render.js")
+    .then(module => module.default)
+    .then(({ Module, render }) => new Viz({ Module, render }));
 
 /**
  *
@@ -21,15 +15,15 @@ if (typeof IS_BROWSER === "undefined" || !IS_BROWSER) {
 export default async (dot, vizOptions, renderOptions) => {
   if (vizOptions && vizOptions !== oldVizOptions) {
     viz = new Viz((oldVizOptions = vizOptions));
+  } else if (viz === undefined) {
+    viz = createVizInstanceWithDefaultOptions();
   }
   const renderer = await viz;
   return renderer.renderString(dot, renderOptions).catch(err => {
     /** @see https://github.com/mdaines/viz.js/wiki/Caveats */
-    if (vizOptions) {
-      oldVizOptions = undefined;
-    } else {
-      viz = createNewVizInstance();
-    }
+    viz = undefined;
+    oldVizOptions = undefined;
+
     throw err;
   });
 };
