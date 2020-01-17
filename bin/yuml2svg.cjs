@@ -5,6 +5,8 @@
  * support ECMAScript modules natively.
  */
 
+"use strict";
+
 const { spawn } = require("child_process");
 const { join } = require("path");
 
