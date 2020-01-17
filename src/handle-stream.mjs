@@ -1,6 +1,6 @@
 let exports;
 
-if ("object" === typeof globalThis && globalThis.ReadableStreamDefaultReader) {
+if ("object" === typeof globalThis && globalThis.ReadableStream) {
   function streamReaderToAsyncIterator(reader) {
     return typeof reader[Symbol.asyncIterator] === "function"
       ? reader
