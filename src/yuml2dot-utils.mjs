@@ -131,6 +131,9 @@ export const serializeDot = function(node) {
     // on the same rank if one or both nodes has a record shape.
 
     if (node.label.includes("|")) {
+      // If label contains a pipe (I.E. multi-row record shapes), we need to use an HTML-like label
+      const rows = node.label.split("|");
+
       const ESCAPED_CHARS = {
         "\n": "<BR/>",
         "&": "&amp;",
@@ -138,29 +141,42 @@ export const serializeDot = function(node) {
         ">": "&gt;",
       };
 
-      // If label contains a pipe, we need to use an HTML-like label
-      return `[fontsize=10,label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="9" ${
+      const createSingleCellRow = (attr, text, fontSize) => {
+        let htmlTDNode = "<TD " + attr;
+        if (text.startsWith("<")) {
+          const closingTagPosition = text.indexOf(">");
+          htmlTDNode += ` PORT="${text.substr(1, closingTagPosition - 1)}"`;
+          text = text.substr(closingTagPosition + 1);
+        }
+        htmlTDNode += ">";
+        if (fontSize) {
+          htmlTDNode += `<FONT POINT-SIZE="${fontSize}">`;
+        }
+        for (const char of unescape_label(text)) {
+          htmlTDNode += ESCAPED_CHARS[char] || char;
+        }
+        if (fontSize) {
+          htmlTDNode += `</FONT>`;
+        }
+        htmlTDNode += "</TD>";
+        return `<TR>${htmlTDNode}</TR>`;
+      };
+
+      const title = rows.shift();
+      return `[fontsize=${
+        node.fontsize
+      },label=<<TABLE CELLBORDER="1" CELLSPACING="0" CELLPADDING="9" ${
         node.fillcolor ? `BGCOLOR="${node.fillcolor}"` : ""
-      } ${node.fontcolor ? `COLOR="${node.fontcolor}"` : ""}>${node.label
-        .split("|")
-        .map(text => {
-          let htmlTDNode = "<TD";
-          if (text.startsWith("<")) {
-            const closingTagPosition = text.indexOf(">");
-            htmlTDNode += ` PORT="${text.substr(1, closingTagPosition - 1)}"`;
-            text = text.substr(closingTagPosition + 1);
-          }
-          htmlTDNode += ">";
-          for (const char of unescape_label(text)) {
-            htmlTDNode += ESCAPED_CHARS[char] || char;
-          }
-          htmlTDNode += "</TD>";
-          return `<TR>${htmlTDNode}</TR>`;
-        })
+      } ${node.fontcolor ? `COLOR="${node.fontcolor}"` : ""} ${
+        node.style && node.style === "rounded" ? 'STYLE="ROUNDED"' : ""
+      }>${createSingleCellRow('BORDER="0"', title)}${rows
+        .map(text =>
+          createSingleCellRow('SIDES="T"', text, node.fontsize * 0.9)
+        )
         .join("")}</TABLE>>]`;
     }
 
-    // To avoid this issue, we can use a "rectangle" shape
+    // On single-row "record", we can use a simpler "rectangle" shape
     node.shape = "rectangle";
   }
   return (
