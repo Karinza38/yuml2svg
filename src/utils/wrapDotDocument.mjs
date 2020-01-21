@@ -1,14 +1,15 @@
 const DEFAULT_FONT = "Helvetica";
 
+const graph = { bgcolor: "transparent" };
 const node = { shape: "none", margin: 0 };
 const DEFAULT_HEADER = {
-  graph: {},
+  graph,
   node,
   edge: {},
 };
 
 const DARK_HEADER = {
-  graph: { bgcolor: "transparent" },
+  graph,
   node: { ...node, color: "white", fontcolor: "white" },
   edge: { color: "white", fontcolor: "white" },
 };
