@@ -1,33 +1,36 @@
 const DEFAULT_FONT = "Helvetica";
 
+const node = { shape: "none", margin: 0 };
 const DEFAULT_HEADER = {
   graph: {},
-  node: { shape: "none", margin: 0 },
+  node,
   edge: {},
 };
 
 const DARK_HEADER = {
   graph: { bgcolor: "transparent" },
-  node: { color: "white", fontcolor: "white" },
+  node: { ...node, color: "white", fontcolor: "white" },
   edge: { color: "white", fontcolor: "white" },
 };
 
-export default (document, isDark, overrides = {}) =>
-  Object.entries(DEFAULT_HEADER).reduce(
-    (pv, [type, defaultSettings]) =>
-      `${pv}\n\t${type}[${Object.entries(
-        Object.assign(
-          {
-            fontname: DEFAULT_FONT,
-          },
-          defaultSettings,
-          DARK_HEADER[isDark && type],
-          overrides[type]
-        )
+function* buildDotHeader(isDark, overrides) {
+  const defaultHeaders = Object.entries(isDark ? DARK_HEADER : DEFAULT_HEADER);
+  for (const [type, defaultSettings] of defaultHeaders) {
+    yield `${type}[${Object.entries(
+      Object.assign(
+        { fontname: DEFAULT_FONT },
+        defaultSettings,
+        overrides[type]
       )
-        .map(entry => entry.join("="))
-        .join(",")}]`,
-    "digraph G{"
-  ) +
+    )
+      .map(entry => entry.join("="))
+      .join(",")}]`;
+  }
+}
+
+export default (document, isDark, overrides = {}) =>
+  "digraph G {\n\t" +
+  [...buildDotHeader(isDark, overrides)].join("\n\t") +
+  "\n" +
   document +
   "\n}\n";
