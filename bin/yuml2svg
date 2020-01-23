@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-"use strict"; // For compat mode
+"use strict";
 
 if (process.stdin.isTTY) {
   console.log("Usage: cat diagram.yuml | yuml2svg > diagram.svg");
