@@ -1,10 +1,10 @@
-import Viz from "viz.js";
+import Viz from "@aduh95/viz.js";
 let viz, oldVizOptions;
 
 const createVizInstanceWithDefaultOptions = () =>
-  import("viz.js/full.render.js")
-    .then(module => module.default)
-    .then(({ Module, render }) => new Viz({ Module, render }));
+  import("@aduh95/viz.js/worker").then(
+    module => new Viz({ worker: module.default() })
+  );
 
 /**
  *

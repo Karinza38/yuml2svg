@@ -22,19 +22,28 @@ const PROJECT_DIR = path.join(__dirname, "..");
 const requestListener = (req, res) => {
   const jsMIME = "application/javascript";
   if (req.url === "/") {
-    const workerURL = "https://unpkg.com/viz.js@2.1.2/full.render.js";
     res.setHeader("Content-Type", "text/html");
-    res.setHeader("Content-Security-Policy", "worker-src data:");
-    fs.readFile(path.join(PROJECT_DIR, "/bin/importmap.json"), "utf8")
+    fs.readFile(path.join(PROJECT_DIR, "/bin/importmap.json"))
+      .then(JSON.parse)
       .then(importMap => {
-        res.end(
-          `<script type="importmap">${importMap}</script>
-            <script type="module">
-                import yuml2svg from "/index.mjs";
+        const workerURL = importMap.imports["@aduh95/viz.js/worker"];
+        const workerLoader = `data:${jsMIME},self.Module={locateFile:file=>"${workerURL.substring(
+          0,
+          workerURL.lastIndexOf("/") + 1
+        )}"+file};importScripts("${encodeURI(workerURL)}")`;
 
-                const vizOptions = {
-                  workerURL: "data:${jsMIME},importScripts('${workerURL}')",
-                };
+        importMap.imports[
+          "@aduh95/viz.js/worker"
+        ] = `data:${jsMIME},export%20default'${encodeURI(workerLoader)}'`;
+        importMap.imports.yuml2svg = "/index.mjs";
+
+        res.end(
+          `<script type="importmap">${JSON.stringify(importMap)}</script>
+            <script type="module">
+                import yuml2svg from "yuml2svg";
+                import workerURL from "@aduh95/viz.js/worker";
+
+                const vizOptions = { workerURL };
 
                 console.time();
                 
