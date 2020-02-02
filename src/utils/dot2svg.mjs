@@ -1,5 +1,12 @@
 import Viz from "@aduh95/viz.js";
-let viz, oldVizOptions;
+/**
+ * @type {Viz}
+ */
+let viz;
+/**
+ * @type {import("@aduh95/viz.js").RenderOptions}
+ */
+let oldVizOptions;
 
 const createVizInstanceWithDefaultOptions = () =>
   import("@aduh95/viz.js/worker").then(
@@ -9,19 +16,18 @@ const createVizInstanceWithDefaultOptions = () =>
 /**
  *
  * @param {string} dot The graph to render, as DOT
- * @param {object} [vizOptions] @see https://github.com/mdaines/viz.js/wiki/API#new-vizoptions
- * @param {object} [renderOptions] @see https://github.com/mdaines/viz.js/wiki/API#render-options
+ * @param {import("@aduh95/viz.js").VizConstructorOptions} [vizOptions]
+ * @param {import("@aduh95/viz.js").RenderOptions} [renderOptions]
  */
 export default async (dot, vizOptions, renderOptions) => {
   if (vizOptions && vizOptions !== oldVizOptions) {
     viz = new Viz((oldVizOptions = vizOptions));
   } else if (viz === undefined) {
-    viz = createVizInstanceWithDefaultOptions();
+    viz = await createVizInstanceWithDefaultOptions();
   }
-  const renderer = await viz;
-  return renderer.renderString(dot, renderOptions).catch(err => {
-    /** @see https://github.com/mdaines/viz.js/wiki/Caveats */
-    viz = undefined;
+  // else uses cached viz instance
+
+  return viz.renderString(dot, renderOptions).catch(err => {
     oldVizOptions = undefined;
 
     throw err;
