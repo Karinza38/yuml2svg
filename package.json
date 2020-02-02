@@ -28,6 +28,9 @@
   ],
   "type": "module",
   "main": "./index.mjs",
+  "exports":{
+    ".":"./index.mjs"
+  },
   "bin": {
     "yuml2svg": "bin/yuml2svg"
   },

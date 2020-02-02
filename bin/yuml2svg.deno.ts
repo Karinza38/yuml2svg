@@ -1,6 +1,6 @@
 #!/usr/bin/env deno
 
-import yuml2svg from "../index.mjs";
+import yuml2svg from "yuml2svg";
 
 if (import.meta.main) {
   if (Deno.isTTY().stdin) {

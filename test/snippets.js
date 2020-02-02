@@ -1,4 +1,4 @@
-import yuml2svg from "../index.mjs";
+import yuml2svg from "yuml2svg";
 import { promises as fs } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";

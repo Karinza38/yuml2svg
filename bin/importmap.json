@@ -1,5 +1,6 @@
 {
   "imports": {
+    "yuml2svg": "../index.mjs",
     "color": "https://dev.jspm.io/color@3.1.2",
     "jsdom": "https://dev.jspm.io/jsdom@16.0.1",
     "@aduh95/viz.js": "https://unpkg.com/@aduh95/viz.js@3.0.0-beta.2/src/index.mjs",
