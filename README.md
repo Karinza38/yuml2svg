@@ -15,9 +15,9 @@ Allows the creation of offline UML diagrams based on the
 - Node.js v12+ _(yuml2svg v5 uses ECMAScript modules, support is still
   experimental at the time of writing)_.
 - Browser support through import maps or bundling (WebPack, Rollup, etc.).
-- Unofficial support for Node.js v10 LTS (with the `--experimental-modules` CLI
-  flag).
-- Unofficial support for Deno.
+- Unofficial support for Node.js v10 LTS (with the `--experimental-modules` and
+  `--experimental-worker` CLI flags).
+- Experimental support for Deno.
 
 ## Installation
 
@@ -64,13 +64,16 @@ Interface.
 yarn global add yuml2svg
 
 # Prints SVG document on the standard output
+yuml2svg < diagram.yuml
+
+# Note: On Windows Powershell, you may need to use cat command instead
 cat diagram.yuml | yuml2svg
 
 # Save SVG file to the disk
-cat diagram.yuml | yuml2svg > diagram.svg
+yuml2svg < diagram.yuml > diagram.svg
 
 # Save SVG file to the disk using dark mode
-cat diagram.yuml | yuml2svg --dark > diagram.svg
+yuml2svg --dark < diagram.yuml > diagram.svg
 ```
 
 ### Node.JS API
