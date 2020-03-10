@@ -33,19 +33,19 @@ fs.readdir(__dirname)
         .map(fileName => import(`./${fileName}`).then(module => module.default))
     )
   )
-  .then(array =>
-    array.reduce(
-      (acc, { status, value, reason }) => {
-        status === "fulfilled"
-          ? acc.pass.push(value)
-          : acc.failures.push(reason);
-        return acc;
-      },
-      { pass: [], failures: [] }
-    )
-  )
-  .then(({ pass, failures }) => ({
-    pass: pass.flat(),
-    failures,
-  }))
+  .then(array => {
+    const pass = [];
+    const failures = [];
+    for (const { status, value, reason } of array) {
+      if (status === "fulfilled") {
+        pass.push(value);
+      } else {
+        failures.push(reason);
+      }
+    }
+    return {
+      pass: pass.flat(),
+      failures,
+    };
+  })
   .then(console.log, console.error);
