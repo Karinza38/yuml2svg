@@ -1,0 +1,2 @@
+// {type:activity}
+(start)->[Water]->(Fill Kettle)->(end)

@@ -22,48 +22,57 @@ Decisions          (start)-><d1>
 Decisions w/Label  (start)-><d1>logged in->(Show Dashboard), <d1>not logged in->(Show Login Page)
 Parallel	       (Action1)->|a|,(Action 2)->|a|
 Note               (Action1)-(note: A note message here)
+Object Node       [Object]
 Comment            // Comments
 */
 
-function parseYumlExpr(specLine) {
-  const exprs = [];
-  const parts = splitYumlExpr(specLine, "(<|");
+function* parseYumlExpr(specLine) {
+  const parts = splitYumlExpr(specLine, "[(<|");
+
+  // yUML syntax allows any character in decision labels.
+  // The following variable serves as flag to avoid parsing 
+  // brackets characters inside labels.
+  let isDecisionLabel = false;
+  let decisionLabelBuffer = "";
 
   for (const part of parts) {
-    if (/^\(.*\)$/.test(part)) {
+    if (/->$/.test(part)) {
+      // arrow
+      const fullLabel = decisionLabelBuffer + part.substr(0, part.length - 2).trim();
+      isDecisionLabel = false;
+      decisionLabelBuffer = "";
+      yield ["edge", "none", "vee", fullLabel, "solid"];
+    } else if (isDecisionLabel) {
+      // decision label parts
+      decisionLabelBuffer += part;
+    } else if (/^\(.*\)$/.test(part)) {
       // activity
       const ret = extractBgAndNote(
         part.substr(1, part.length - 2).trim(),
         true
       );
-      exprs.push([
+      yield [
         ret.isNote ? "note" : "record",
         ret.part,
+        "rounded",
         ret.bg,
         ret.fontcolor,
-      ]);
+      ];
     } else if (/^<.*>$/.test(part)) {
       // decision
-      exprs.push(["diamond", part.substr(1, part.length - 2).trim()]);
+      isDecisionLabel = true;
+      yield ["diamond", part.substr(1, part.length - 2).trim()];
+    } else if (/^\[.*\]$/.test(part)) {
+      // object node
+      yield ["record", part.substr(1, part.length - 2).trim()];
     } else if (/^\|.*\|$/.test(part)) {
       // bar
-      exprs.push(["mrecord", part.substr(1, part.length - 2).trim()]);
-    } else if (/->$/.test(part)) {
-      // arrow
-      exprs.push([
-        "edge",
-        "none",
-        "vee",
-        part.substr(0, part.length - 2).trim(),
-        "solid",
-      ]);
+      yield ["mrecord", part.substr(1, part.length - 2).trim()];
     } else if (part === "-") {
       // connector for notes
-      exprs.push(["edge", "none", "none", "", "solid"]);
-    } else throw new Error("Invalid expression");
+      yield ["edge", "none", "none", "", "solid"];
+    } else throw new Error(`Invalid expression: "${part}"`);
   }
-
-  return exprs;
 }
 
 function composeDotExpr(specLines, options) {
@@ -72,11 +81,10 @@ function composeDotExpr(specLines, options) {
   const elements = [];
 
   for (const line of specLines) {
-    const parsedYumlExpr = parseYumlExpr(line);
-    const parsedYumlExprLastIndex = parsedYumlExpr.length - 1;
+    const parsedYumlExpr = Array.from(parseYumlExpr(line));
 
     for (const elem of parsedYumlExpr) {
-      const [shape, label] = elem;
+      const [shape, label, style] = elem;
 
       if (shape === "note" || shape === "record") {
         const uid = uidHandler.createUid(label);
@@ -97,18 +105,18 @@ function composeDotExpr(specLines, options) {
             fontsize: 10,
             margin: "0.20,0.05",
             label: escape_label(label),
-            style: "rounded",
+            style,
           };
 
-          if (elem[2]) {
-            const color = Color(elem[2]);
+          if (elem[3]) {
+            const color = Color(elem[3]);
 
             node.style += ",filled";
             node.fillcolor = color.hex();
             node.fontcolor = color.isDark() ? "white" : "black";
           }
 
-          if (elem[3]) node.fontcolor = elem[3];
+          if (elem[4]) node.fontcolor = elem[4];
         }
 
         elements.push([uid, node]);
@@ -144,6 +152,7 @@ function composeDotExpr(specLines, options) {
       }
     }
 
+    const parsedYumlExprLastIndex = parsedYumlExpr.length - 1;
     for (let k = 1; k < parsedYumlExprLastIndex; k++) {
       if (
         parsedYumlExpr[k][0] === "edge" &&
