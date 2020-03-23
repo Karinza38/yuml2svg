@@ -21,8 +21,8 @@ function* buildDotHeader(isDark, overrides) {
       Object.assign(
         { fontname: DEFAULT_FONT },
         defaultSettings,
-        overrides[type]
-      )
+        overrides[type],
+      ),
     )
       .map(entry => entry.join("="))
       .join(",")}]`;

@@ -127,7 +127,7 @@ function composeDotExpr(specLines, options) {
       }
 
       dot += `\t${uidHandler.getUid(
-        parsedYumlExpr[0][1]
+        parsedYumlExpr[0][1],
       )} -> ${uidHandler.getUid(parsedYumlExpr[2][1])} ${serializeDot(edge)}\n`;
     }
   }

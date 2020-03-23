@@ -10,7 +10,7 @@ let oldVizOptions;
 
 const createVizInstanceWithDefaultOptions = () =>
   import("@aduh95/viz.js/worker").then(
-    module => new Viz({ worker: module.default() })
+    module => new Viz({ worker: module.default() }),
   );
 
 /**

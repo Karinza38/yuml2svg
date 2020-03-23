@@ -31,12 +31,12 @@ if ("object" === typeof globalThis && globalThis.ReadableStream) {
           break;
         }
         const fullLine = new Uint8Array(
-          remainingBits.length + indexOfLineReturn - previousStop
+          remainingBits.length + indexOfLineReturn - previousStop,
         );
         fullLine.set(remainingBits);
         fullLine.set(
           value.slice(previousStop, indexOfLineReturn),
-          remainingBits.length
+          remainingBits.length,
         );
         previousStop = indexOfLineReturn + 1;
         remainingBits = EMPTY_ARRAY;
@@ -51,7 +51,7 @@ if ("object" === typeof globalThis && globalThis.ReadableStream) {
 
   exports = async (input, processLine) => {
     for await (const line of splitAndDecode(
-      streamReaderToAsyncIterator(input)
+      streamReaderToAsyncIterator(input),
     )) {
       processLine(line);
     }
@@ -72,7 +72,7 @@ if ("object" === typeof globalThis && globalThis.ReadableStream) {
             // If the input stream is erroneous or already consumed
             input.on("error", reject);
             input.on("close", reject);
-          })
+          }),
       );
 }
 

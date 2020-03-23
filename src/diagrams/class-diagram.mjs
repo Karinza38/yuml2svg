@@ -48,7 +48,7 @@ function* parseYumlExpr(specLine) {
         throw new Error(`Invalid expression - "${part}".`);
       }
 
-      const processLeft = function(left) {
+      const processLeft = function (left) {
         if (left.startsWith("<>")) return ["odiamond", left.substring(2)];
         else if (left.startsWith("++")) return ["diamond", left.substring(2)];
         else if (left.startsWith("+")) return ["odiamond", left.substring(1)];
@@ -60,7 +60,7 @@ function* parseYumlExpr(specLine) {
 
       const [leftStyle, leftText] = processLeft(left);
 
-      const processRight = function(right) {
+      const processRight = function (right) {
         const len = right.length;
 
         if (right.endsWith("<>"))
@@ -150,7 +150,7 @@ function composeDotExpr(specLines, options) {
       };
 
       const dotEdge = `${uidHandler.getUid(
-        parsedYumlExpr[0][1]
+        parsedYumlExpr[0][1],
       )} -> ${uidHandler.getUid(parsedYumlExpr[2][1])} ${serializeDot(edge)}`;
 
       dot += hasNote ? `\t{rank=same;${dotEdge};}\n` : `\t${dotEdge}\n`;
@@ -207,11 +207,11 @@ function composeDotExpr(specLines, options) {
         uidHandler.getUid(parsedYumlExpr[2][1]);
 
       dot += `\t${uid} ${serializeDot(junction)}\n\t${uidHandler.getUid(
-        parsedYumlExpr[0][1]
+        parsedYumlExpr[0][1],
       )} -> ${uid} ${serializeDot(edge1)}\n\t${uid} -> ${uidHandler.getUid(
-        parsedYumlExpr[2][1]
+        parsedYumlExpr[2][1],
       )} ${serializeDot(edge2)}\n\t{rank=same;${uidHandler.getUid(
-        parsedYumlExpr[3][1]
+        parsedYumlExpr[3][1],
       )} -> ${uid} ${serializeDot(edge3)};}\n`;
     }
   }

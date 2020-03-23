@@ -1,6 +1,6 @@
 import Color from "color";
 
-export const escape_label = function(label) {
+export const escape_label = function (label) {
   const ESCAPED_CHARS = {
     "{": "\\{",
     "}": "\\}",
@@ -24,7 +24,7 @@ const unescape_label = label =>
     .replace(/\\</g, "<")
     .replace(/\\>/g, ">");
 
-export const splitYumlExpr = function*(line, separators, escape = "\\") {
+export const splitYumlExpr = function* (line, separators, escape = "\\") {
   const SEPARATOR_END = {
     "[": "]",
     "<": ">",
@@ -63,11 +63,11 @@ export const splitYumlExpr = function*(line, separators, escape = "\\") {
   }
 };
 
-export const extractBgAndNote = function(part, allowNote) {
+export const extractBgAndNote = function (part, allowNote) {
   const ret = { bg: "", isNote: false, luma: 128 };
 
   const bgParts = /^(.*)\{\s*bg\s*:\s*([a-zA-Z]+\d*|#[0-9a-fA-F]{3,6})\s*\}$/.exec(
-    part
+    part,
   );
   if (bgParts !== null && bgParts.length === 3) {
     const bgColor = Color(bgParts[2].trim());
@@ -85,28 +85,28 @@ export const extractBgAndNote = function(part, allowNote) {
   return ret;
 };
 
-export const escape_token_escapes = function(spec) {
+export const escape_token_escapes = function (spec) {
   return spec.replace("\\[", "\\u005b").replace("\\]", "\\u005d");
 };
 
-export const unescape_token_escapes = function(spec) {
+export const unescape_token_escapes = function (spec) {
   return spec.replace("\\u005b", "[").replace("\\u005d", "]");
 };
 
 export const recordName = label =>
   (label.includes("|") ? label.substr(0, label.indexOf("|")) : label).trim();
 
-export const formatLabel = function(label, wrap, allowDivisors) {
+export const formatLabel = function (label, wrap, allowDivisors) {
   const DIVISOR = "|";
   const lines =
     allowDivisors && label.includes(DIVISOR) ? label.split(DIVISOR) : [label];
 
   return escape_label(
-    lines.map(line => wordwrap(line, wrap, "\n")).join(DIVISOR)
+    lines.map(line => wordwrap(line, wrap, "\n")).join(DIVISOR),
   );
 };
 
-export const wordwrap = function(str, width, newline) {
+export const wordwrap = function (str, width, newline) {
   if (str && str.length >= width) {
     const p = str.lastIndexOf(" ");
     if (p > 0) {
@@ -118,7 +118,7 @@ export const wordwrap = function(str, width, newline) {
   return str;
 };
 
-export const serializeDot = function(node) {
+export const serializeDot = function (node) {
   if (
     node.shape &&
     node.shape === "record" &&
@@ -171,7 +171,7 @@ export const serializeDot = function(node) {
         node.style && node.style === "rounded" ? 'STYLE="ROUNDED"' : ""
       }>${createSingleCellRow('BORDER="0"', title)}${rows
         .map(text =>
-          createSingleCellRow('SIDES="T"', text, node.fontsize * 0.9)
+          createSingleCellRow('SIDES="T"', text, node.fontsize * 0.9),
         )
         .join("")}</TABLE>>]`;
     }
@@ -185,14 +185,14 @@ export const serializeDot = function(node) {
       .map(
         key =>
           `${key}=` +
-          ("string" === typeof node[key] ? `"${node[key]}"` : node[key])
+          ("string" === typeof node[key] ? `"${node[key]}"` : node[key]),
       )
       .join(" , ") +
     " ]"
   );
 };
 
-export const serializeDotElements = function(iterator) {
+export const serializeDotElements = function (iterator) {
   let dot = "";
 
   for (const record of iterator) {

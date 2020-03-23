@@ -28,8 +28,8 @@
   ],
   "type": "module",
   "main": "./index.mjs",
-  "exports":{
-    ".":"./index.mjs"
+  "exports": {
+    ".": "./index.mjs"
   },
   "bin": {
     "yuml2svg": "bin/yuml2svg"
@@ -49,6 +49,6 @@
     "eslint-config-defaults": "^9.0.0",
     "eslint-config-prettier": "^6.2.0",
     "eslint-plugin-prettier": "^3.0.0",
-    "prettier": "1.19.1"
+    "prettier": "^2.0.1"
   }
 }

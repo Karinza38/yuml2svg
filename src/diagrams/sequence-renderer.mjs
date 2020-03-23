@@ -7,7 +7,7 @@ export default import("../utils/svg-builder.mjs")
   .then(module => module.default)
   .then(
     SVGBuilder =>
-      function(actors, signals, uids, isDark) {
+      function (actors, signals, uids, isDark) {
         const DIAGRAM_MARGIN = 10;
         const ACTOR_MARGIN = 10; // Margin around a actor
         const ACTOR_PADDING = 10; // Padding inside a actor
@@ -26,7 +26,7 @@ export default import("../utils/svg-builder.mjs")
         this.width = 0;
         this.height = 0;
 
-        this.draw = function() {
+        this.draw = function () {
           this.layout();
           this.svg_.setDocumentSize(this.width, this.height);
 
@@ -36,11 +36,11 @@ export default import("../utils/svg-builder.mjs")
           this.draw_signals(y + this._actors_height);
         };
 
-        this.layout = function() {
+        this.layout = function () {
           this.width = 0; // min width
           this.height = 0; // min width
 
-          this.actors.forEach(function(a) {
+          this.actors.forEach(function (a) {
             const bb = this.svg_.getTextSize(a.label);
             a.text_bb = bb;
 
@@ -71,7 +71,7 @@ export default import("../utils/svg-builder.mjs")
             }
           }
 
-          signals.forEach(function(s) {
+          signals.forEach(function (s) {
             let a, b; // Indexes of the left and right actors involved
 
             const bb = this.svg_.getTextSize(s.message);
@@ -110,11 +110,11 @@ export default import("../utils/svg-builder.mjs")
 
           // Re-jig the positions
           let actors_x = 0;
-          this.actors.forEach(function(a) {
+          this.actors.forEach(function (a) {
             a.x = Math.max(actors_x, a.x);
 
             // TODO This only works if we loop in sequence, 0, 1, 2, etc
-            a.distances.forEach(function(distance, b) {
+            a.distances.forEach(function (distance, b) {
               b = actors[b];
               distance = Math.max(distance, a.width / 2, b.width / 2);
               b.x = Math.max(b.x, a.x + a.width / 2 + distance - b.width / 2);
@@ -130,9 +130,9 @@ export default import("../utils/svg-builder.mjs")
           return this;
         };
 
-        this.draw_actors = function(offsetY) {
+        this.draw_actors = function (offsetY) {
           const y = offsetY;
-          this.actors.forEach(function(a) {
+          this.actors.forEach(function (a) {
             // Top box
             this.draw_actor(a, y, this._actors_height);
 
@@ -140,7 +140,7 @@ export default import("../utils/svg-builder.mjs")
             this.draw_actor(
               a,
               y + this._actors_height + this._signals_height,
-              this._actors_height
+              this._actors_height,
             );
 
             // Vertical line
@@ -150,22 +150,22 @@ export default import("../utils/svg-builder.mjs")
               "solid",
               aX,
               y + this._actors_height - ACTOR_MARGIN,
-              2 * ACTOR_MARGIN + this._signals_height
+              2 * ACTOR_MARGIN + this._signals_height,
             );
 
             this.svg_.getDocument().appendChild(line);
           }, this);
         };
 
-        this.draw_actor = function(actor, offsetY, height) {
+        this.draw_actor = function (actor, offsetY, height) {
           actor.y = offsetY;
           actor.height = height;
           this.draw_text_box(actor, actor.label, ACTOR_MARGIN, ACTOR_PADDING);
         };
 
-        this.draw_signals = function(offsetY) {
+        this.draw_signals = function (offsetY) {
           let y = offsetY;
-          this.signals.forEach(function(s) {
+          this.signals.forEach(function (s) {
             if (s.type === "signal") {
               if (s.actorA === s.actorB) this.draw_self_signal(s, y);
               else this.draw_signal(s, y);
@@ -175,7 +175,7 @@ export default import("../utils/svg-builder.mjs")
           }, this);
         };
 
-        this.draw_self_signal = function(signal, offsetY) {
+        this.draw_self_signal = function (signal, offsetY) {
           const text_bb = signal.text_bb;
           const aX = getCenterX(signal.actorA);
 
@@ -190,14 +190,14 @@ export default import("../utils/svg-builder.mjs")
             aX,
             offsetY + SIGNAL_MARGIN,
             aX + SELF_SIGNAL_WIDTH * 2,
-            offsetY + signal.height
+            offsetY + signal.height,
           );
           line.setAttribute("marker-end", "url(#" + signal.arrowtype + ")");
 
           this.svg_.getDocument().appendChild(line);
         };
 
-        this.draw_signal = function(signal, offsetY) {
+        this.draw_signal = function (signal, offsetY) {
           const aX = getCenterX(signal.actorA);
           const bX = getCenterX(signal.actorB);
 
@@ -215,14 +215,14 @@ export default import("../utils/svg-builder.mjs")
             signal.linetype,
             aX,
             y,
-            bX - aX
+            bX - aX,
           );
           line.setAttribute("marker-end", "url(#" + signal.arrowtype + ")");
 
           this.svg_.getDocument().appendChild(line);
         };
 
-        this.draw_note = function(note, offsetY) {
+        this.draw_note = function (note, offsetY) {
           const aX = getCenterX(note.actor);
           const margin = NOTE_MARGIN;
 
@@ -237,7 +237,7 @@ export default import("../utils/svg-builder.mjs")
             note.y + margin + 7,
             note.x - margin + note.width,
             note.x + margin,
-            note.y - margin + note.height
+            note.y - margin + note.height,
           );
 
           if (note.hasOwnProperty("bgcolor"))
@@ -254,11 +254,11 @@ export default import("../utils/svg-builder.mjs")
             y,
             note.message,
             true,
-            note.hasOwnProperty("fontcolor") && note.fontcolor
+            note.hasOwnProperty("fontcolor") && note.fontcolor,
           );
         };
 
-        this.draw_text = function(x, y, text, dontDrawBox, color) {
+        this.draw_text = function (x, y, text, dontDrawBox, color) {
           const t = this.svg_.createText(text, x, y, color);
 
           if (!dontDrawBox) {
@@ -273,7 +273,7 @@ export default import("../utils/svg-builder.mjs")
           this.svg_.getDocument().appendChild(t);
         };
 
-        this.draw_text_box = function(box, text, margin) {
+        this.draw_text_box = function (box, text, margin) {
           let x = box.x + margin;
           let y = box.y + margin;
           const w = box.width - 2 * margin;
@@ -303,5 +303,5 @@ export default import("../utils/svg-builder.mjs")
         }
 
         this.draw();
-      }
+      },
   );

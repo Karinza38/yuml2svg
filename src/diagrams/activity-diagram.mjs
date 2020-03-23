@@ -30,7 +30,7 @@ function* parseYumlExpr(specLine) {
   const parts = splitYumlExpr(specLine, "[(<|");
 
   // yUML syntax allows any character in decision labels.
-  // The following variable serves as flag to avoid parsing 
+  // The following variable serves as flag to avoid parsing
   // brackets characters inside labels.
   let isDecisionLabel = false;
   let decisionLabelBuffer = "";
@@ -38,7 +38,8 @@ function* parseYumlExpr(specLine) {
   for (const part of parts) {
     if (/->$/.test(part)) {
       // arrow
-      const fullLabel = decisionLabelBuffer + part.substr(0, part.length - 2).trim();
+      const fullLabel =
+        decisionLabelBuffer + part.substr(0, part.length - 2).trim();
       isDecisionLabel = false;
       decisionLabelBuffer = "";
       yield ["edge", "none", "vee", fullLabel, "solid"];
@@ -49,7 +50,7 @@ function* parseYumlExpr(specLine) {
       // activity
       const ret = extractBgAndNote(
         part.substr(1, part.length - 2).trim(),
-        true
+        true,
       );
       yield [
         ret.isNote ? "note" : "record",

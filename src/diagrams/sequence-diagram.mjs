@@ -164,8 +164,8 @@ function composeSVG(specLines, options) {
         actors,
         signals,
         uidHandler._uids,
-        options.isDark
-      ).svg_.serialize()
+        options.isDark,
+      ).svg_.serialize(),
     );
 }
 

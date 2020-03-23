@@ -133,9 +133,9 @@ export default (specLines, options) => {
         }
 
         dot += `\t${uidHandler.getUid(
-          parsedYumlExpr[k - 1][1]
+          parsedYumlExpr[k - 1][1],
         )} -> ${uidHandler.getUid(parsedYumlExpr[k + 1][1])} ${serializeDot(
-          edge
+          edge,
         )}\n`;
       }
     }

@@ -21,10 +21,10 @@ const BLACK = "#000";
  * @param {boolean} isDark Option to get dark or light shapes
  * @returns {string} SVG document embedding shapes
  */
-export default function(svg, isDark) {
+export default function (svg, isDark) {
   const expr = /<text(\s.*)>{img:(.*)}(.*)<\/text>/g;
 
-  return svg.replace(expr, function(match, attributes, shapeName, label) {
+  return svg.replace(expr, function (match, attributes, shapeName, label) {
     try {
       if (shapeName in shapes) {
         const img = shapes[shapeName];
