@@ -33,7 +33,7 @@ declare const yuml2svg: (
     format?: "svg";
     images?: object[];
     files?: object[];
-  }
+  },
 ) => Promise<string>;
 /**
  * Generates SVG diagram.
@@ -44,7 +44,7 @@ declare const yuml2svg: (
  * @param {string} [options.isDark] - Option to get dark or light diagram
  * @param {object} [options.dotHeaderOverrides] - Dot HEADER overrides (Not supported for Sequence diagrams)
  * @param {object} [vizOptions] - @see https://github.com/mdaines/viz.js/wiki/API#new-vizoptions (should be undefined for back-end rendering)
- * @param {string} [vizOptions.workerUrl] - URL of one of the rendering script files
+ * @param {string | URL} [vizOptions.workerUrl] - URL of one of the rendering script files
  * @param {Worker} [vizOptions.worker] - Worker instance constructed with the URL or path of one of the rendering script files
  * @param {object} [renderOptions] - @see https://github.com/mdaines/viz.js/wiki/API#render-options
  * @param {string} [renderOptions.engine] - layout engine

@@ -23,7 +23,7 @@ const directions = {
  * @param {string} [options.isDark] - Option to get dark or light diagram
  * @param {object} [options.dotHeaderOverrides] - Dot HEADER overrides (Not supported for Sequence diagrams)
  * @param {object} [vizOptions] - @see https://github.com/mdaines/viz.js/wiki/API#new-vizoptions (should be undefined for back-end rendering)
- * @param {string} [vizOptions.workerUrl] - URL of one of the rendering script files
+ * @param {string|URL} [vizOptions.workerUrl] - URL of one of the rendering script files
  * @param {Worker} [vizOptions.worker] - Worker instance constructed with the URL or path of one of the rendering script files
  * @param {object} [renderOptions] - @see https://github.com/mdaines/viz.js/wiki/API#render-options
  * @param {string} [renderOptions.engine] - layout engine
@@ -45,10 +45,15 @@ export default (input, options, vizOptions, renderOptions) => {
     return import(`./src/utils/handle-stream.mjs`)
       .then(module => module.default)
       .then(handleStream =>
-        handleStream(input, processLine(options, diagramInstructions))
+        handleStream(input, processLine(options, diagramInstructions)),
       )
       .then(() =>
-        processYumlData(diagramInstructions, options, vizOptions, renderOptions)
+        processYumlData(
+          diagramInstructions,
+          options,
+          vizOptions,
+          renderOptions,
+        ),
       );
   } else {
     input
@@ -60,7 +65,7 @@ export default (input, options, vizOptions, renderOptions) => {
       diagramInstructions,
       options,
       vizOptions,
-      renderOptions
+      renderOptions,
     );
   }
 };
@@ -69,7 +74,7 @@ const processYumlData = (
   diagramInstructions,
   options,
   vizOptions,
-  renderOptions
+  renderOptions,
 ) => {
   if (diagramInstructions.length === 0) {
     return Promise.resolve("");
@@ -77,7 +82,7 @@ const processYumlData = (
 
   if (!options.hasOwnProperty("type")) {
     return Promise.reject(
-      new Error("Error: Missing mandatory 'type' directive")
+      new Error("Error: Missing mandatory 'type' directive"),
     );
   }
 
@@ -96,19 +101,19 @@ const processYumlData = (
             Promise.all([
               import(`./src/utils/dot2svg.mjs`).then(module => module.default),
               import(`./src/utils/wrapDotDocument.mjs`).then(
-                module => module.default
+                module => module.default,
               ),
               renderingPromise,
             ]).then(([dot2svg, wrapDotDocument, dotDocument]) =>
               dot2svg(
                 wrapDotDocument(dotDocument, isDark, dotHeaderOverrides),
                 vizOptions,
-                renderOptions
-              )
+                renderOptions,
+              ),
             ),
             import(`./src/utils/svg-utils.mjs`).then(module => module.default),
           ]).then(([svg, processEmbeddedImages]) =>
-            processEmbeddedImages(svg, isDark)
+            processEmbeddedImages(svg, isDark),
           );
     } catch (err) {
       return Promise.reject(err);
@@ -127,7 +132,7 @@ const processLine = (options, diagramInstructions) => line => {
   }
 };
 
-const processDirectives = function(line, options) {
+const processDirectives = function (line, options) {
   const keyValue = /^\/\/\s+\{\s*([\w]+)\s*:\s*([\w]+)\s*\}$/.exec(line); // extracts directives as:  // {key:value}
   if (keyValue !== null && keyValue.length === 3) {
     const [_, key, value] = keyValue;
@@ -140,8 +145,8 @@ const processDirectives = function(line, options) {
           console.warn(
             new Error(
               "Invalid value for 'type'. Allowed values are: " +
-                Object.keys(diagramTypes).join(", ")
-            )
+                Object.keys(diagramTypes).join(", "),
+            ),
           );
         }
         break;
@@ -153,8 +158,8 @@ const processDirectives = function(line, options) {
           console.warn(
             new Error(
               "Invalid value for 'direction'. Allowed values are: " +
-                Object.keys(directions).join(", ")
-            )
+                Object.keys(directions).join(", "),
+            ),
           );
         }
         break;
@@ -166,8 +171,8 @@ const processDirectives = function(line, options) {
         } else {
           console.warn(
             new Error(
-              "Error: invalid value for 'generate'. Allowed values are: true, false <i>(default)</i>."
-            )
+              "Error: invalid value for 'generate'. Allowed values are: true, false <i>(default)</i>.",
+            ),
           );
         }
     }
