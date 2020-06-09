@@ -33,6 +33,8 @@ async function runDeno(options = []) {
   return new Promise((resolve, reject) => {
     const buffer = [];
     const deno_process = execFile(DENO_EXECUTABLE, [
+      "run",
+      "--unstable",
       "--importmap",
       join(PACKAGE_ROOT_PATH, "bin", "deno-files", "importmap.json"),
       `--allow-read=/dev,${PACKAGE_ROOT_PATH}`,
@@ -56,19 +58,19 @@ const test = (options, successMessage, errorMessage) =>
   Promise.all([runNode, runDeno].map(fun => fun(options))).then(output =>
     Buffer.compare(...output.map(chunks => Buffer.from(chunks)))
       ? Promise.reject(new Error(errorMessage))
-      : Promise.resolve(successMessage)
+      : Promise.resolve(successMessage),
   );
 
 export default Promise.all([
   test(
     [],
     "Deno and Node are aligned when using no options",
-    "Node and Deno should produce same output when no option is specified"
+    "Node and Deno should produce same output when no option is specified",
   ),
 
   test(
     ["--dark"],
     "Deno and Node are aligned with --dark option",
-    "Node and Deno should produce same output with --dark option"
+    "Node and Deno should produce same output with --dark option",
   ),
 ]);
