@@ -27,7 +27,7 @@ jobs:
           version } = require(join(process.env.GITHUB_WORKSPACE,
           "package.json")); const tag = version.match(/alpha|beta|rc/); const [,
           changes] = readFileSync(join(process.env.GITHUB_WORKSPACE,
-          "CHANGELOG.md"), "utf8").split("\n### "); core.setOutput("VERSION",
+          "CHANGELOG.md"), "utf8").split("\n## "); core.setOutput("VERSION",
           version); core.setOutput("RELEASE_NOTES",
           changes.substring(changes.indexOf("\n")));
           core.setOutput("IS_PRE_RELEASE", !!tag); core.setOutput("NPM_FLAGS",
