@@ -1,5 +1,9 @@
 # Change Log
 
+## 5.0.1
+
+- Fix Node.js compatibility table in `package.json`.
+
 ## 5.0.0
 
 - **Breaking** Minimal Node.js version bump to 12
