@@ -1,4 +1,4 @@
-# yUML to SVG
+ yUML to SVG
 
 [![npm](https://img.shields.io/npm/v/yuml2svg.svg)](https://www.npmjs.com/package/yuml2svg)
 
